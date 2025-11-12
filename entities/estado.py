@@ -1,8 +1,11 @@
 from abc import ABC, abstractmethod
 from datetime import datetime
-from entities.evento_sismico import EventoSismico
-from entities.cambio_estado import CambioEstado
-from typing import List
+from typing import List, TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from entities.evento_sismico import EventoSismico
+    from entities.cambio_estado import CambioEstado
+
 
 class Estado(ABC):
     estados = []
@@ -38,5 +41,5 @@ class Estado(ABC):
         pass
     
     @abstractmethod
-    def bloquearEvento(self, evento: EventoSismico, fechaHoraFin: datetime, responsable: str, cambiosEstado: List[CambioEstado]):
+    def bloquearEvento(self, evento: 'EventoSismico', fechaHoraFin: datetime, responsable: str, cambiosEstado: List['CambioEstado']):
         pass

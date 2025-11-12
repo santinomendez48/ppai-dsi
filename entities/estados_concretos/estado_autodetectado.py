@@ -1,4 +1,8 @@
+from typing import List
+import datetime
+from entities.cambio_estado import CambioEstado
 from entities.estado import Estado
+from entities.evento_sismico import EventoSismico
 
 class AutoDetectado(Estado):
     def __init__(self):
@@ -15,4 +19,7 @@ class AutoDetectado(Estado):
 
     def esEstadoRechazado(self) -> bool:
         return False
+    
+    def bloquearEvento(self, evento: EventoSismico, fechaHoraFin: datetime, responsable: str, cambiosEstado: List[CambioEstado]):
+        pass
         

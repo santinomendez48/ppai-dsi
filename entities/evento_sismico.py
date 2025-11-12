@@ -10,7 +10,7 @@ from entities.estado import Estado
 class EventoSismico:
     def __init__(self, id: int, fechaHoraConcurrencia: datetime, latitudEpicentro: float, longitudEpicentro: float,
                  latitudHipocentro: float, longitudHipocentro: float, valorMagnitud: float,
-                 clasificacion: ClasificacionSismo, origenGeneracion: OrigenDeGeneracion, alcanceSismo: AlcanceSismo):
+                 clasificacion: ClasificacionSismo, origenGeneracion: OrigenDeGeneracion, alcanceSismo: AlcanceSismo, estadoActual: Estado):
         self.id = id
         self.fechaHoraConcurrencia = fechaHoraConcurrencia
         self.latitudEpicentro = latitudEpicentro
@@ -24,27 +24,17 @@ class EventoSismico:
         self.seriesTemporales: List[SerieTemporal] = []
         self.cambiosEstado: List[CambioEstado] = []
         self.fechaHoraFin = None
+        self.estadoActual = estadoActual 
 
-    def crearCambioEstado(self, nuevo_estado: Estado, fecha_hora: datetime, responsable: str):
-        # Buscar el primer cambio de estado actual (sin fechaHoraFin) y cerrarlo
-        for cambio in self.cambiosEstado:
-            if cambio.fechaHoraFin is None:
-                cambio.setFechaHoraFin(fecha_hora)
-                break
-        cambio_nuevo = CambioEstado(fecha_hora, nuevo_estado, responsable)
-        self.cambiosEstado.append(cambio_nuevo)
+    def bloquearEventoSismico(self, fechaHoraActual: datetime, responsable: str):
+        self.estadoActual.bloquearEvento(self, fechaHoraActual, responsable, self.cambiosEstado)
 
-    def bloquearEventoSismico(self, estado, fechaHoraFin: datetime, responsable: str):
-        self.crearCambioEstado(estado, fechaHoraFin, responsable)
-
-    def rechazarEvento(self, estado, fechaHoraFin: datetime, responsable: str):
-        self.crearCambioEstado(estado, fechaHoraFin, responsable)
-
-    def confirmarEvento(self, estado, fechaHoraFin: datetime, responsable: str):
-        self.crearCambioEstado(estado, fechaHoraFin, responsable)
-
-    def derivarExperto(self, estado, fechaHoraFin: datetime, responsable: str):
-        self.crearCambioEstado(estado, fechaHoraFin, responsable)
+    def rechazarEvento(self, fechaHoraFin: datetime, responsable: str):
+        pass
+    def confirmarEvento(self,  fechaHoraFin: datetime, responsable: str):
+        pass
+    def derivarExperto(self, fechaHoraFin: datetime, responsable: str):
+        pass
 
     def getAlcance(self) -> str:
         return self.alcanceSismo.getNombre()
@@ -75,3 +65,9 @@ class EventoSismico:
                     **muestra
                 })
         return resultados
+    
+    def agregarCambioEstado(self, cambioEstado: CambioEstado):
+        self.cambiosEstado.append(cambioEstado)
+
+    def setEstadoActual(self, estadoActual: Estado):
+        self.estadoActual = estadoActual

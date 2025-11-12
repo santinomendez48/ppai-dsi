@@ -1,4 +1,10 @@
-class Estado:
+from abc import ABC, abstractmethod
+from datetime import datetime
+from entities.evento_sismico import EventoSismico
+from entities.cambio_estado import CambioEstado
+from typing import List
+
+class Estado(ABC):
     estados = []
 
     def __init__(self, nombreEstado: str, ambito: str):
@@ -15,22 +21,22 @@ class Estado:
                 return estado
         return None
 
+    @abstractmethod
     def esAutoDetectado(self) -> bool:
-        return self.nombreEstado == "AutoDetectado"
+        pass
 
+    @abstractmethod
     def esPendienteDeRevision(self) -> bool:
-        return self.nombreEstado == "PendienteRevision"
+        pass
 
+    @abstractmethod
     def esBloqueadoEnRevision(self) -> bool:
-        return self.nombreEstado == "BloqueadoEnRevision"
+        pass
 
+    @abstractmethod
     def esEstadoRechazado(self) -> bool:
-        return self.nombreEstado == "Rechazado"
-
-# Estados hardcodeados
-Estado("AutoDetectado", "Evento auto detectado")
-Estado("PendienteRevision", "Pendiente de revisión")
-Estado("BloqueadoEnRevision", "Evento bloqueado para revisión")
-Estado("Rechazado", "Evento rechazado por analista")
-Estado("Confirmado", "Evento confirmado por analista")
-Estado("DerivadoAExperto", "Evento derivado a experto")
+        pass
+    
+    @abstractmethod
+    def bloquearEvento(self, evento: EventoSismico, fechaHoraFin: datetime, responsable: str, cambiosEstado: List[CambioEstado]):
+        pass

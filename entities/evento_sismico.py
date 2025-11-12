@@ -6,6 +6,7 @@ from entities.clasificacion_sismo import ClasificacionSismo
 from entities.origen_de_generacion import OrigenDeGeneracion
 from entities.alcance_sismo import AlcanceSismo
 from entities.estado import Estado
+
 class EventoSismico:
     def __init__(self, id: int, fechaHoraConcurrencia: datetime, latitudEpicentro: float, longitudEpicentro: float,
                  latitudHipocentro: float, longitudHipocentro: float, valorMagnitud: float,

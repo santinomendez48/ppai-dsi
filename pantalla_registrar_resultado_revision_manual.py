@@ -179,7 +179,7 @@ class PantallaRegistrarResultadoRevisionManual:
     def confirmarEvento(self):
         evento = self.gestor.evento_seleccionado
         if evento:
-            self.gestor.confirmarEvento(evento)
+            self.gestor.confirmarEvento()
             self.mostrarDatosEventoSismico(evento)
             messagebox.showinfo("Éxito", "Evento confirmado correctamente.")
             self.mostrarSismos()
@@ -187,7 +187,7 @@ class PantallaRegistrarResultadoRevisionManual:
     def rechazarEvento(self):
         evento = self.gestor.evento_seleccionado
         if evento:
-            self.gestor.rechazarEvento(evento)
+            self.gestor.rechazarEvento()
             self.mostrarDatosEventoSismico(evento)
             messagebox.showinfo("Éxito", "Evento rechazado correctamente.")
             self.mostrarSismos()
@@ -195,7 +195,7 @@ class PantallaRegistrarResultadoRevisionManual:
     def derivarEvento(self):
         evento = self.gestor.evento_seleccionado
         if evento:
-            self.gestor.derivarEvento(evento)
+            self.gestor.derivarEvento()
             self.mostrarDatosEventoSismico(evento)
             messagebox.showinfo("Éxito", "Evento derivado a experto correctamente.")
             self.mostrarSismos()

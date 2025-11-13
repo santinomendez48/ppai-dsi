@@ -23,7 +23,7 @@ class GestorRegistrarResultadoRevisionManual:
         self.eventos = []
         self.evento_seleccionado = None
         self.estacion_seleccionada = None
-        self.empleado_logueado = None
+        self.responsable = None
     
     # Metodo para inicializar el gestor
     def registrarResultadoRevisionManual(self):
@@ -53,9 +53,9 @@ class GestorRegistrarResultadoRevisionManual:
     # Metodo para bloquear el evento seleccionado
     def bloquearEventoSeleccionado(self):
         if self.evento_seleccionado is not None:
-            self.empleado_logueado = self.getASlogueado()
+            self.responsable = self.getASlogueado()
             fechaHoraActual = self.getFechaHoraActual()
-            self.evento_seleccionado.bloquearEventoSismico(fechaHoraActual, self.empleado_logueado)
+            self.evento_seleccionado.bloquearEventoSismico(fechaHoraActual, self.responsable)
         else:
             raise ValueError("No hay evento seleccionado para bloquear.")
         # Guardar cambios en la base de datos
@@ -74,25 +74,25 @@ class GestorRegistrarResultadoRevisionManual:
         self.repository.update(evento)
 
     # Metodo para confirmar el evento
-    def confirmarEvento(self, evento):
+    def confirmarEvento(self):
         fechaHoraActual = self.getFechaHoraActual()
-        evento.confirmarEvento(fechaHoraActual, self.empleado_logueado)
+        self.evento_seleccionado.confirmarEvento(fechaHoraActual, self.responsable)
         # Guardar cambios en la base de datos
-        self.repository.update(evento)
+        self.repository.update(self.evento_seleccionado)
 
     # Metodo para rechazar el evento
-    def rechazarEvento(self, evento):
+    def rechazarEvento(self):
         fechaHoraActual = self.getFechaHoraActual()
-        self.evento_seleccionado.rechazarEvento(fechaHoraActual, self.empleado_logueado)
+        self.evento_seleccionado.rechazarEvento(fechaHoraActual, self.responsable)
         # Guardar cambios en la base de datos
-        self.repository.update(evento)
+        self.repository.update(self.evento_seleccionado)
 
     # Metodo para derivar el evento
-    def derivarEvento(self, evento):
+    def derivarEvento(self):
         fechaHoraActual = self.getFechaHoraActual()
-        evento.derivarExperto(fechaHoraActual, self.empleado_logueado)
+        self.evento_seleccionado.derivarExperto(fechaHoraActual, self.responsable)
         # Guardar cambios en la base de datos
-        self.repository.update(evento)
+        self.repository.update(self.evento_seleccionado)
 
 
     # Metodo para obtener el Analista Sismológico logueado (simulado)

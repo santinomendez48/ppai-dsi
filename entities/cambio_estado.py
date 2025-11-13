@@ -8,8 +8,8 @@ class CambioEstado:
         self.estado = estado
         self.responsable = responsable
 
-    def setFechaHoraFin(self, fechaHora: datetime):
-        self.fechaHoraFin = fechaHora
+    def setFechaHoraFin(self, fechaHoraFin: datetime):
+        self.fechaHoraFin = fechaHoraFin
 
     def esEstadoActual(self) -> bool:
         return self.fechaHoraFin is None

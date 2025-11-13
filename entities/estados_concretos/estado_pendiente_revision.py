@@ -37,8 +37,11 @@ class PendienteRevision(Estado):
                 return cambio
         return None
     
-    def crearEstadoBloqueadoEnRevision() -> Estado:
+    def crearEstadoBloqueadoEnRevision(self) -> Estado:
         return Estado.getEstadoPorNombre("BloqueadoEnRevision")
 
     def crearCambioEstado(self, fechaHoraInicio: datetime, nuevoEstado: Estado, responsable: str) -> CambioEstado:
         return CambioEstado(fechaHoraInicio, nuevoEstado, responsable)
+    
+    def rechazarEvento(self, evento: EventoSismico, fechaHoraActual: datetime, responsable: str, cambiosEstado: List[CambioEstado]):
+        pass

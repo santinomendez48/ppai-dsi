@@ -41,5 +41,9 @@ class Estado(ABC):
         pass
     
     @abstractmethod
-    def bloquearEvento(self, evento: 'EventoSismico', fechaHoraFin: datetime, responsable: str, cambiosEstado: List['CambioEstado']):
+    def bloquearEvento(self, evento: 'EventoSismico', fechaHoraActual: datetime, responsable: str, cambiosEstado: List['CambioEstado']):
+        pass
+
+    @abstractmethod
+    def rechazarEvento(self, evento: 'EventoSismico', fechaHoraActual: datetime, responsable: str, cambiosEstado: List['CambioEstado']):
         pass

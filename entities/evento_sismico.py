@@ -29,8 +29,9 @@ class EventoSismico:
     def bloquearEventoSismico(self, fechaHoraActual: datetime, responsable: str):
         self.estadoActual.bloquearEvento(self, fechaHoraActual, responsable, self.cambiosEstado)
 
-    def rechazarEvento(self, fechaHoraFin: datetime, responsable: str):
-        pass
+    def rechazarEvento(self, fechaHoraActual: datetime, responsable: str):
+        self.estadoActual.rechazarEvento(self, fechaHoraActual, responsable, self.cambiosEstado)
+        
     def confirmarEvento(self,  fechaHoraFin: datetime, responsable: str):
         pass
     def derivarExperto(self, fechaHoraFin: datetime, responsable: str):

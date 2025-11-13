@@ -80,13 +80,16 @@ class PantallaRegistrarResultadoRevisionManual:
         if not idx:
             return
         evento = self.eventos_cargados[idx[0]]
-        self.gestor.tomarSeleccionSismo(evento.id)
         self.mostrarDatosEventoSismico(evento)
+        
 
     def tomarSeleccionSismo(self):
-        evento = self.gestor.evento_seleccionado
-        if not evento:
+        idx = self.lst_eventos.curselection()
+        if not idx:
+            messagebox.showwarning("Advertencia", "Por favor selecciona un sismo.")
             return
+        evento = self.eventos_cargados[idx[0]]
+        self.gestor.tomarSeleccionSismo(evento.id)
         muestras = self.gestor.obtenerValoresMuestras(evento)
         nombres_estaciones = list({muestra['Estacion Sismologica'] for muestra in muestras if muestra.get('Estacion Sismologica')})
         self.cmb_estaciones['values'] = nombres_estaciones
@@ -94,6 +97,7 @@ class PantallaRegistrarResultadoRevisionManual:
             self.cmb_estaciones.current(0)
             self.on_estacion_select(None)
         self.btn_modificar.config(state="normal")
+        
 
     def on_estacion_select(self, event):
         evento = self.gestor.evento_seleccionado

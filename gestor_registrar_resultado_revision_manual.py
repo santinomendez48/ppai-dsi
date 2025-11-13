@@ -46,6 +46,7 @@ class GestorRegistrarResultadoRevisionManual:
         for e in self.eventos:
             if e.id == evento_id:
                 self.evento_seleccionado = e
+                self.bloquearEventoSeleccionado()
                 return e
         return None
 
@@ -54,16 +55,13 @@ class GestorRegistrarResultadoRevisionManual:
         if self.evento_seleccionado is not None:
             self.empleado_logueado = self.getASlogueado()
             fechaHoraActual = self.getFechaHoraActual()
-            self.evento_seleccionado.bloquearEventoSismico(fechaHoraActual, empleado)
+            self.evento_seleccionado.bloquearEventoSismico(fechaHoraActual, self.empleado_logueado)
+            print(f"Evento: {self.evento_seleccionado}")
         else:
             raise ValueError("No hay evento seleccionado para bloquear.")
-
-    # Metodo para obtener el estado bloqueado en revision
-    def getEstadoBloqueadoEnRevision(self):
-        estado = Estado.getEstadoPorNombre("BloqueadoEnRevision")
-        if estado is None:
-            raise ValueError("Estado 'Bloqueado' no encontrado")
-        return estado
+        # Guardar cambios en la base de datos
+        self.repository.update(self.evento_seleccionado)
+        print("Evento bloqueado y guardado en la base de datos.")
 
     # Metodo para obtener los valores de las muestras
     def obtenerValoresMuestras(self, evento):
@@ -89,7 +87,7 @@ class GestorRegistrarResultadoRevisionManual:
     # Metodo para rechazar el evento
     def rechazarEvento(self, evento):
         fechaHoraActual = self.getFechaHoraActual()
-        pass
+        self.evento_seleccionado.rechazarEvento(fechaHoraActual, self.getASlogueado())
         # Guardar cambios en la base de datos
         self.repository.update(evento)
 

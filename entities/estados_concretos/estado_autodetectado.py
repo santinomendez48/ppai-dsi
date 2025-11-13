@@ -25,4 +25,12 @@ class AutoDetectado(Estado):
 
     def rechazarEvento(self, evento: EventoSismico, fechaHoraActual: datetime, responsable: str, cambiosEstado: List[CambioEstado]):
         pass
+
+    def confirmarEvento(self, evento: EventoSismico, fechaHoraActual: datetime, responsable: str, cambiosEstado: List[CambioEstado]):
+        pass
+
+    def derivarExperto(self, evento: EventoSismico, fechaHoraActual: datetime, responsable: str, cambiosEstado: List[CambioEstado]):
+        pass
+
+    
         

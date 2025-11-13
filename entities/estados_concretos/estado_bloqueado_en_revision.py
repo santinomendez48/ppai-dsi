@@ -19,21 +19,7 @@ class BloqueadoEnRevision(Estado):
 
     def esEstadoRechazado(self) -> bool:
         return False
-    
-    def bloquearEvento(self, evento: EventoSismico, fechaHoraFin: datetime, responsable: str, cambiosEstado: List[CambioEstado]):
-        pass
 
-    def rechazarEvento(self, evento: EventoSismico, fechaHoraActual: datetime, responsable: str, cambiosEstado: List[CambioEstado]):
-        cambioActual = self.buscarCambioEstadoActual(cambiosEstado)
-        if cambioActual is not None:
-            cambioActual.setFechaHoraFin(fechaHoraActual)
-            nuevoEstado = self.crearEstadoRechazado()
-            nuevoCambio = self.crearCambioEstado(fechaHoraActual, nuevoEstado, responsable)
-            evento.agregarCambioEstado(nuevoCambio)
-            evento.setEstadoActual(nuevoEstado)
-        else:
-            raise ValueError("Error al rechazar evento: no hay cambio de estado actual para rechazar.")
-    
     def buscarCambioEstadoActual(self, cambiosEstado: List[CambioEstado]) -> CambioEstado:
         for cambio in cambiosEstado:
             if cambio.esEstadoActual():
@@ -45,3 +31,45 @@ class BloqueadoEnRevision(Estado):
     
     def crearEstadoRechazado(self) -> Estado:
         return Estado.getEstadoPorNombre("Rechazado")
+    
+    def crearEstadoConfirmado(self) -> Estado:
+        return Estado.getEstadoPorNombre("Confirmado")
+    
+    def crearEstadoDerivadoExperto(self) -> Estado:
+        return Estado.getEstadoPorNombre("DerivadoAExperto")
+    
+    def rechazarEvento(self, evento: EventoSismico, fechaHoraActual: datetime, responsable: str, cambiosEstado: List[CambioEstado]):
+        cambioActual = self.buscarCambioEstadoActual(cambiosEstado)
+        if cambioActual is not None:
+            cambioActual.setFechaHoraFin(fechaHoraActual)
+            nuevoEstado = self.crearEstadoRechazado()
+            nuevoCambio = self.crearCambioEstado(fechaHoraActual, nuevoEstado, responsable)
+            evento.agregarCambioEstado(nuevoCambio)
+            evento.setEstadoActual(nuevoEstado)
+        else:
+            raise ValueError("Error al rechazar evento: no hay cambio de estado actual para rechazar.")
+    
+    def confirmarEvento(self, evento: EventoSismico, fechaHoraActual: datetime, responsable: str, cambiosEstado: List[CambioEstado]):
+        cambioActual = self.buscarCambioEstadoActual(cambiosEstado)
+        if cambioActual is not None:
+            cambioActual.setFechaHoraFin(fechaHoraActual)
+            nuevoEstado = self.crearEstadoConfirmado()
+            nuevoCambio = self.crearCambioEstado(fechaHoraActual, nuevoEstado, responsable)
+            evento.agregarCambioEstado(nuevoCambio)
+            evento.setEstadoActual(nuevoEstado)
+        else:
+            raise ValueError("Error al confirmar evento: no hay cambio de estado actual para confirmar.")
+    
+    def derivarExperto(self, evento: EventoSismico, fechaHoraActual: datetime, responsable: str, cambiosEstado: List[CambioEstado]):
+        cambioActual = self.buscarCambioEstadoActual(cambiosEstado)
+        if cambioActual is not None:
+            cambioActual.setFechaHoraFin(fechaHoraActual)
+            nuevoEstado = self.crearEstadoDerivadoExperto()
+            nuevoCambio = self.crearCambioEstado(fechaHoraActual, nuevoEstado, responsable)
+            evento.agregarCambioEstado(nuevoCambio)
+            evento.setEstadoActual(nuevoEstado)
+        else:
+            raise ValueError("Error al derivar evento: no hay cambio de estado actual para derivar.")
+
+    def bloquearEvento(self, evento: EventoSismico, fechaHoraActual: datetime, responsable: str, cambiosEstado: List[CambioEstado]):
+        pass

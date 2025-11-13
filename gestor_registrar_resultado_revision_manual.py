@@ -56,12 +56,10 @@ class GestorRegistrarResultadoRevisionManual:
             self.empleado_logueado = self.getASlogueado()
             fechaHoraActual = self.getFechaHoraActual()
             self.evento_seleccionado.bloquearEventoSismico(fechaHoraActual, self.empleado_logueado)
-            print(f"Evento: {self.evento_seleccionado}")
         else:
             raise ValueError("No hay evento seleccionado para bloquear.")
         # Guardar cambios en la base de datos
         self.repository.update(self.evento_seleccionado)
-        print("Evento bloqueado y guardado en la base de datos.")
 
     # Metodo para obtener los valores de las muestras
     def obtenerValoresMuestras(self, evento):
@@ -77,49 +75,25 @@ class GestorRegistrarResultadoRevisionManual:
 
     # Metodo para confirmar el evento
     def confirmarEvento(self, evento):
-        estado = self.getEstadoConfirmado()
-        empleado = self.getASlogueado()
         fechaHoraActual = self.getFechaHoraActual()
-        evento.confirmarEvento(estado, fechaHoraActual, empleado)
+        evento.confirmarEvento(fechaHoraActual, self.empleado_logueado)
         # Guardar cambios en la base de datos
         self.repository.update(evento)
 
     # Metodo para rechazar el evento
     def rechazarEvento(self, evento):
         fechaHoraActual = self.getFechaHoraActual()
-        self.evento_seleccionado.rechazarEvento(fechaHoraActual, self.getASlogueado())
+        self.evento_seleccionado.rechazarEvento(fechaHoraActual, self.empleado_logueado)
         # Guardar cambios en la base de datos
         self.repository.update(evento)
 
     # Metodo para derivar el evento
     def derivarEvento(self, evento):
-        estado = self.getEstadoDerivadoAExperto()
-        empleado = self.getASlogueado()
         fechaHoraActual = self.getFechaHoraActual()
-        evento.derivarExperto(estado, fechaHoraActual, empleado)
+        evento.derivarExperto(fechaHoraActual, self.empleado_logueado)
         # Guardar cambios en la base de datos
         self.repository.update(evento)
 
-    # Metodo para obtener el estado "Derivado a Experto"
-    def getEstadoDerivadoAExperto(self):
-        estado = Estado.getEstadoPorNombre("DerivadoAExperto")
-        if estado is None:
-            raise ValueError("Estado 'DerivadoAExperto' no encontrado")
-        return estado
-
-    # Metodo para obtener el estado "Rechazado"
-    def getEstadoRechazado(self):
-        estado = Estado.getEstadoPorNombre("Rechazado")
-        if estado is None:
-            raise ValueError("Estado 'Rechazado' no encontrado")
-        return estado
-
-    # Metodo para obtener el estado "Confirmado"
-    def getEstadoConfirmado(self):
-        estado = Estado.getEstadoPorNombre("Confirmado")
-        if estado is None:
-            raise ValueError("Estado 'Confirmado' no encontrado")
-        return estado
 
     # Metodo para obtener el Analista Sismológico logueado (simulado)
     def getASlogueado(self):

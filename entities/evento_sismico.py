@@ -32,10 +32,11 @@ class EventoSismico:
     def rechazarEvento(self, fechaHoraActual: datetime, responsable: str):
         self.estadoActual.rechazarEvento(self, fechaHoraActual, responsable, self.cambiosEstado)
         
-    def confirmarEvento(self,  fechaHoraFin: datetime, responsable: str):
-        pass
-    def derivarExperto(self, fechaHoraFin: datetime, responsable: str):
-        pass
+    def confirmarEvento(self,  fechaHoraActual: datetime, responsable: str):
+        self.estadoActual.confirmarEvento(self, fechaHoraActual, responsable, self.cambiosEstado)
+        
+    def derivarExperto(self, fechaHoraActual: datetime, responsable: str):
+        self.estadoActual.derivarExperto(self, fechaHoraActual, responsable, self.cambiosEstado)
 
     def getAlcance(self) -> str:
         return self.alcanceSismo.getNombre()
